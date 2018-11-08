@@ -52,6 +52,7 @@ int cfg_num_threads;
 int cfg_max_threads;
 int cfg_max_playouts;
 int cfg_max_visits;
+float cfg_c_value;
 size_t cfg_max_memory;
 size_t cfg_max_tree_size;
 int cfg_max_cache_ratio_percent;
@@ -120,6 +121,7 @@ void GTP::setup_default_parameters() {
     cfg_max_memory = UCTSearch::DEFAULT_MAX_MEMORY;
     cfg_max_playouts = UCTSearch::UNLIMITED_PLAYOUTS;
     cfg_max_visits = UCTSearch::UNLIMITED_PLAYOUTS;
+    cfg_c_value= 0.8f;
     // This will be overwriiten in initialize() after network size is known.
     cfg_max_tree_size = UCTSearch::DEFAULT_MAX_MEMORY;
     cfg_max_cache_ratio_percent = 10;
@@ -207,7 +209,8 @@ const std::string GTP::s_commands[] = {
 const std::string GTP::s_options[] = {
     "option name Maximum Memory Use (MiB) type spin default 2048 min 128 max 131072",
     "option name Percentage of memory for cache type spin default 10 min 1 max 99",
-    "option name Visits type spin default 0 min 0 max 1000000000",
+    "option name Visits type spin default 1 min 0 max 1000000000",
+    "option name c_value type spin default 0 min 0 max 1000000000",
     "option name Playouts type spin default 0 min 0 max 1000000000",
     "option name Lagbuffer type spin default 0 min 0 max 3000",
     "option name Resign Percentage type spin default -1 min -1 max 30",
@@ -1116,6 +1119,13 @@ void GTP::execute_setoption(UCTSearch & search,
         // explicit command to set memory usage is given,
         // we will stick with the initial guess we made on startup.
         search.set_visit_limit(cfg_max_visits);
+
+        gtp_printf(id, "");
+    }else if (name == "c_value") {
+        std::istringstream valuestream(value);
+        float c_value;
+        valuestream >> c_value;
+        cfg_c_value = c_value;
 
         gtp_printf(id, "");
     } else if (name == "playouts") {

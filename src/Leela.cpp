@@ -64,6 +64,8 @@ static void parse_commandline(int argc, char *argv[]) {
                        "Requires --noponder.")
         ("visits,v", po::value<int>(),
                      "Weaken engine by limiting the number of visits.")
+		("c_value,c", po::value<float>(),
+					 "UCB c value. For exploration. Should be between 0.01 and maybe 10")
         ("lagbuffer,b", po::value<int>()->default_value(cfg_lagbuffer_cs),
                         "Safety margin for time usage in centiseconds.")
         ("resignpct,r", po::value<int>()->default_value(cfg_resignpct),
@@ -299,6 +301,11 @@ static void parse_commandline(int argc, char *argv[]) {
             cfg_max_visits = UCTSearch::UNLIMITED_PLAYOUTS;
         }
     }
+
+    if (vm.count("c_value")) {
+        cfg_c_value = vm["c_value"].as<float>();
+    }
+
 
     if (vm.count("resignpct")) {
         cfg_resignpct = vm["resignpct"].as<int>();
