@@ -272,7 +272,25 @@ UCTNode* UCTNode::uct_select_child(int color, bool is_root) {
         } else if (child.get_visits() > 0) {
             winrate = child.get_eval(color);
         }
-        const auto psa = child.get_policy();
+        auto psa = child.get_policy();
+        // the first visit is always for tengen
+        auto tengen_first_move = true;
+        
+        //printf("move: %d", child.get_move());
+        if (get_visits() < 10 && is_root){
+            //if child is tengen
+            //printf("move,visit: %i %i\n", child.get_move(), get_visits());
+            //printf("move,wr: %i %f \n", child.get_move(), winrate);
+            
+            if (child.get_move() == 220){
+                //printf("first move and tengen, setting psa");
+                winrate = 1.0;
+                psa = 1000.0;
+            }
+            //printf("move,wr: %i %f\n", child.get_move(), winrate);
+            
+        }
+
         const auto denom = 1.0 + child.get_visits();
         const auto puct = cfg_puct * psa * (numerator / denom);
         const auto value = winrate + puct;
