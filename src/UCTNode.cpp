@@ -273,22 +273,25 @@ UCTNode* UCTNode::uct_select_child(int color, bool is_root) {
             winrate = child.get_eval(color);
         }
         auto psa = child.get_policy();
-        // the first visit is always for tengen
-        auto tengen_first_move = true;
-        
-        //printf("move: %d", child.get_move());
-        if (get_visits() < 10 && is_root){
-            //if child is tengen
-            //printf("move,visit: %i %i\n", child.get_move(), get_visits());
-            //printf("move,wr: %i %f \n", child.get_move(), winrate);
-            
-            if (child.get_move() == 220){
-                //printf("first move and tengen, setting psa");
-                winrate = 1.0;
-                psa = 1000.0;
+
+
+        // manipulate psa to initially look at tengen or mirror move.
+        int max_visits_manipulate = 500;        
+        int psa_adder_tengen = 5;
+        int psa_adder_mirror = 100;
+        if (get_visits() < max_visits_manipulate){// && is_root){
+            auto this_move = m_move;
+            auto child_move = child.get_move();
+            bool is_mirror = (440 - child_move) % 440 == this_move;
+            bool is_tengen = child.get_move() == 220;
+
+            if (color == FastBoard::BLACK && is_tengen){
+                    psa += psa_adder_tengen;
             }
-            //printf("move,wr: %i %f\n", child.get_move(), winrate);
-            
+
+            if (color == FastBoard::WHITE && is_mirror){
+                    psa += psa_adder_mirror;
+            } 
         }
 
         const auto denom = 1.0 + child.get_visits();
