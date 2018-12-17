@@ -295,7 +295,9 @@ UCTNode* UCTNode::uct_select_child(int color, bool is_root) {
         }
 
         const auto denom = 1.0 + child.get_visits();
-        const auto puct = cfg_puct * psa * (numerator / denom);
+        //dont use cfg puct but rather c value for experiments
+        const auto c = cfg_c_value;
+        const auto puct = c * psa * (numerator / denom);
         const auto value = winrate + puct;
         assert(value > std::numeric_limits<double>::lowest());
 
