@@ -275,24 +275,20 @@ UCTNode* UCTNode::uct_select_child(int color, bool is_root) {
         auto psa = child.get_policy();
 
 
-        // manipulate psa to initially look at tengen or mirror move.
-        int max_visits_manipulate = 500;        
-        int psa_adder_tengen = 5;
-        int psa_adder_mirror = 100;
-        if (get_visits() < max_visits_manipulate){// && is_root){
-            auto this_move = m_move;
-            auto child_move = child.get_move();
-            bool is_mirror = (440 - child_move) % 440 == this_move;
-            bool is_tengen = child.get_move() == 220;
+        // manipulate psa to initially look only at tengen or mirror move.
+        bool is_mirror = (440 - child.get_move()) % 440 == m_move;
+        bool is_tengen = child.get_move() == 220;
 
-            if (color == FastBoard::BLACK && is_tengen){
-                    psa += psa_adder_tengen;
-            }
-
-            if (color == FastBoard::WHITE && is_mirror){
-                    psa += psa_adder_mirror;
-            } 
+        bool is_fraction_tengen = get_visits() % cfg_fraction_tengen == 0;
+        bool is_fraction_mirror = get_visits() % cfg_fraction_mirror == 0;
+        
+        if (color == FastBoard::BLACK && is_tengen && get_visits() < cfg_visit_tengen && is_fraction_tengen){
+                psa += cfg_add_tengen;
         }
+
+        if (color == FastBoard::WHITE && is_mirror && get_visits() < cfg_visit_mirror && is_fraction_mirror){
+                psa += cfg_add_mirror;
+        } 
 
         const auto denom = 1.0 + child.get_visits();
         //dont use cfg puct but rather c value for experiments

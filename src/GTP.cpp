@@ -53,6 +53,12 @@ int cfg_max_threads;
 int cfg_max_playouts;
 int cfg_max_visits;
 float cfg_c_value;
+int cfg_visit_tengen;
+int cfg_visit_mirror;
+int cfg_add_tengen;
+int cfg_add_mirror;
+int cfg_fraction_tengen;
+int cfg_fraction_mirror;
 size_t cfg_max_memory;
 size_t cfg_max_tree_size;
 int cfg_max_cache_ratio_percent;
@@ -121,7 +127,13 @@ void GTP::setup_default_parameters() {
     cfg_max_memory = UCTSearch::DEFAULT_MAX_MEMORY;
     cfg_max_playouts = UCTSearch::UNLIMITED_PLAYOUTS;
     cfg_max_visits = UCTSearch::UNLIMITED_PLAYOUTS;
-    cfg_c_value= 0.8f;
+    cfg_c_value = 0.8f;
+    cfg_visit_tengen = 10000;
+    cfg_visit_mirror = 10000;
+    cfg_add_tengen = 100;
+    cfg_add_mirror = 100;
+    cfg_fraction_tengen = 10;
+    cfg_fraction_mirror = 10;
     // This will be overwriiten in initialize() after network size is known.
     cfg_max_tree_size = UCTSearch::DEFAULT_MAX_MEMORY;
     cfg_max_cache_ratio_percent = 10;
@@ -1126,7 +1138,42 @@ void GTP::execute_setoption(UCTSearch & search,
         float c_value;
         valuestream >> c_value;
         cfg_c_value = c_value;
-
+        gtp_printf(id, "");
+    }else if (name == "visit_tengen") {
+        std::istringstream valuestream(value);
+        float visit_tengen;
+        valuestream >> visit_tengen;
+        cfg_visit_tengen = visit_tengen;
+        gtp_printf(id, "");
+    }else if (name == "visit_mirror") {
+        std::istringstream valuestream(value);
+        float visit_mirror;
+        valuestream >> visit_mirror;
+        cfg_visit_mirror = visit_mirror;
+        gtp_printf(id, "");
+    }else if (name == "add_tengen") {
+        std::istringstream valuestream(value);
+        float add_tengen;
+        valuestream >> add_tengen;
+        cfg_add_tengen = add_tengen;
+        gtp_printf(id, "");
+    }else if (name == "add_mirror") {
+        std::istringstream valuestream(value);
+        float add_mirror;
+        valuestream >> add_mirror;
+        cfg_add_mirror = add_mirror;
+        gtp_printf(id, "");
+    }else if (name == "fraction_tengen") {
+        std::istringstream valuestream(value);
+        float fraction_tengen;
+        valuestream >> fraction_tengen;
+        cfg_fraction_tengen = fraction_tengen;
+        gtp_printf(id, "");
+    }else if (name == "fraction_mirror") {
+        std::istringstream valuestream(value);
+        float fraction_mirror;
+        valuestream >> fraction_mirror;
+        cfg_fraction_mirror = fraction_mirror;
         gtp_printf(id, "");
     } else if (name == "playouts") {
         std::istringstream valuestream(value);

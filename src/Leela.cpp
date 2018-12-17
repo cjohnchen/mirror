@@ -66,6 +66,18 @@ static void parse_commandline(int argc, char *argv[]) {
                      "Weaken engine by limiting the number of visits.")
 		("c_value,c", po::value<float>(),
 					 "UCB c value. For exploration. Should be between 0.01 and maybe 10")
+        ("visit_tengen", po::value<int>(),
+					 "Number of visits, where tengen is amplified")
+        ("visit_mirror", po::value<int>(),
+					 "Number of visits, where mirror is amplified")
+        ("add_tengen", po::value<int>(),
+					 "Amount of psa added to tengen")
+        ("add_mirror", po::value<int>(),
+					 "Amount of psa added to mirror") 
+        ("fraction_tengen", po::value<int>(),
+					 "Fraction of moves with tengen. e.g: if fraction == 10, then every 10th move is tengen")
+        ("fraction_mirror", po::value<int>(),
+					 "Fraction of moves with mirror. e.g: if fraction == 10, then every 10th move is mirror")                
         ("lagbuffer,b", po::value<int>()->default_value(cfg_lagbuffer_cs),
                         "Safety margin for time usage in centiseconds.")
         ("resignpct,r", po::value<int>()->default_value(cfg_resignpct),
@@ -306,6 +318,29 @@ static void parse_commandline(int argc, char *argv[]) {
         cfg_c_value = vm["c_value"].as<float>();
     }
 
+    if (vm.count("visit_tengen")) {
+        cfg_visit_tengen = vm["visit_tengen"].as<int>();
+    }
+
+    if (vm.count("visit_mirror")) {
+        cfg_visit_mirror = vm["visit_mirror"].as<int>();
+    }
+
+    if (vm.count("add_tengen")) {
+        cfg_add_tengen = vm["add_tengen"].as<int>();
+    }
+
+    if (vm.count("add_mirror")) {
+        cfg_add_mirror = vm["add_mirror"].as<int>();
+    }
+
+    if (vm.count("fraction_tengen")) {
+        cfg_fraction_tengen = vm["fraction_tengen"].as<int>();
+    }
+
+    if (vm.count("fraction_mirror")) {
+        cfg_fraction_mirror = vm["fraction_mirror"].as<int>();
+    }
 
     if (vm.count("resignpct")) {
         cfg_resignpct = vm["resignpct"].as<int>();
