@@ -71,9 +71,9 @@ static void parse_commandline(int argc, char *argv[]) {
         ("visit_mirror", po::value<int>(),
 					 "Number of visits, where mirror is amplified")
         ("add_tengen", po::value<int>(),
-					 "Amount of psa added to tengen")
+					 "Amount of psa added to tengen. If value is negative, it uses highest psa of children")
         ("add_mirror", po::value<int>(),
-					 "Amount of psa added to mirror") 
+					 "Amount of psa added to mirror. If value is negative, it uses highest psa of children") 
         ("fraction_tengen", po::value<int>(),
 					 "Fraction of moves with tengen. e.g: if fraction == 10, then every 10th move is tengen")
         ("fraction_mirror", po::value<int>(),

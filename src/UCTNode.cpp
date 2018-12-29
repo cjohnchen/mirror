@@ -259,6 +259,16 @@ UCTNode* UCTNode::uct_select_child(int color, bool is_root) {
     auto best = static_cast<UCTNodePointer*>(nullptr);
     auto best_value = std::numeric_limits<double>::lowest();
 
+
+    // get max psa of childs
+    float max_psa = 0.0f;
+    for (auto& child : m_children) {
+        auto psa_child = child.get_policy();
+        if (psa_child > max_psa){
+            max_psa = psa_child;
+        }
+    }
+
     for (auto& child : m_children) {
         if (!child.active()) {
             continue;
@@ -282,12 +292,23 @@ UCTNode* UCTNode::uct_select_child(int color, bool is_root) {
         bool is_fraction_tengen = get_visits() % cfg_fraction_tengen == 0;
         bool is_fraction_mirror = get_visits() % cfg_fraction_mirror == 0;
         
-        if (color == FastBoard::BLACK && is_tengen && get_visits() < cfg_visit_tengen && is_fraction_tengen){
-                psa += cfg_add_tengen;
+        if (is_tengen && get_visits() < cfg_visit_tengen && is_fraction_tengen){
+                if (cfg_add_tengen < 0){
+                    // add max_psa instead of psa given by arguments
+                    psa = max_psa;
+                } else {
+                    psa += cfg_add_tengen;
+                }
+                
         }
 
         if (color == FastBoard::WHITE && is_mirror && get_visits() < cfg_visit_mirror && is_fraction_mirror){
-                psa += cfg_add_mirror;
+                if (cfg_add_mirror < 0){
+                    // add max_psa instead of psa given by arguments
+                    psa = max_psa;
+                } else {
+                    psa += cfg_add_mirror;
+                }
         } 
 
         const auto denom = 1.0 + child.get_visits();
