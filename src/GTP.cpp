@@ -128,8 +128,8 @@ void GTP::setup_default_parameters() {
     cfg_max_playouts = UCTSearch::UNLIMITED_PLAYOUTS;
     cfg_max_visits = UCTSearch::UNLIMITED_PLAYOUTS;
     cfg_c_value = 0.8f;
-    cfg_visit_tengen = 10000;
-    cfg_visit_mirror = 10000;
+    cfg_visit_tengen = 0;
+    cfg_visit_mirror = 0;
     cfg_add_tengen = 100;
     cfg_add_mirror = 100;
     cfg_fraction_tengen = 10;
