@@ -127,13 +127,13 @@ void GTP::setup_default_parameters() {
     cfg_max_memory = UCTSearch::DEFAULT_MAX_MEMORY;
     cfg_max_playouts = UCTSearch::UNLIMITED_PLAYOUTS;
     cfg_max_visits = UCTSearch::UNLIMITED_PLAYOUTS;
-    cfg_c_value = 0.8f;
-    cfg_visit_tengen = 0;
-    cfg_visit_mirror = 0;
-    cfg_add_tengen = 100;
-    cfg_add_mirror = 100;
-    cfg_fraction_tengen = 10;
-    cfg_fraction_mirror = 10;
+    cfg_c_value = 0.618f;
+	cfg_visit_tengen = 0;
+	cfg_visit_mirror = 1000;
+	cfg_add_tengen = 0;
+	cfg_add_mirror = 32;
+	cfg_fraction_tengen = 1;
+	cfg_fraction_mirror = 2;
     // This will be overwriiten in initialize() after network size is known.
     cfg_max_tree_size = UCTSearch::DEFAULT_MAX_MEMORY;
     cfg_max_cache_ratio_percent = 10;
@@ -148,9 +148,9 @@ void GTP::setup_default_parameters() {
     cfg_precision = precision_t::AUTO;
 #endif
 #endif
-    cfg_puct = 0.8f;
+    cfg_puct = 0.9f;
     cfg_softmax_temp = 1.0f;
-    cfg_fpu_reduction = 0.25f;
+    cfg_fpu_reduction = 0.15f;
     // see UCTSearch::should_resign
     cfg_resignpct = -1;
     cfg_noise = false;
