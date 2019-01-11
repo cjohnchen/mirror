@@ -286,8 +286,8 @@ UCTNode* UCTNode::uct_select_child(int color, bool is_root) {
 
 
         // manipulate psa to initially look only at tengen or mirror move.
-        bool is_mirror = (440 - child.get_move()) % 440 == m_move;
-        bool is_tengen = child.get_move() == 220;
+        bool is_mirror = (2000 - child.get_move()) % 2000 == m_move;
+        bool is_tengen = child.get_move() == 1000;
 
         bool is_fraction_tengen = get_visits() % cfg_fraction_tengen == 0;
         bool is_fraction_mirror = get_visits() % cfg_fraction_mirror == 0;
