@@ -127,7 +127,7 @@ void GTP::setup_default_parameters() {
     cfg_max_memory = UCTSearch::DEFAULT_MAX_MEMORY;
     cfg_max_playouts = UCTSearch::UNLIMITED_PLAYOUTS;
     cfg_max_visits = UCTSearch::UNLIMITED_PLAYOUTS;
-    cfg_c_value = 0.618f;
+    cfg_c_value = 2.5f;
 	cfg_visit_tengen = 0;
 	cfg_visit_mirror = 1000;
 	cfg_add_tengen = 0;
@@ -148,16 +148,16 @@ void GTP::setup_default_parameters() {
     cfg_precision = precision_t::AUTO;
 #endif
 #endif
-    cfg_puct = 0.9f;
-    cfg_softmax_temp = 1.0f;
-    cfg_fpu_reduction = 0.15f;
+    cfg_puct = 2.5f;
+    cfg_softmax_temp = 0.67f;
+    cfg_fpu_reduction = 0.10f;
     // see UCTSearch::should_resign
     cfg_resignpct = -1;
     cfg_noise = false;
     cfg_fpu_root_reduction = cfg_fpu_reduction;
     cfg_random_cnt = 0;
     cfg_random_min_visits = 1;
-    cfg_random_temp = 1.0f;
+    cfg_random_temp = 0.3f;
     cfg_dumbpass = false;
     cfg_logfile_handle = nullptr;
     cfg_quiet = false;
